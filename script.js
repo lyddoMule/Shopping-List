@@ -59,10 +59,26 @@ function checkUI() {
         clear.style.display='block'
     }
 }
+function filterItems(e) {
+    const items = itemList.querySelectorAll('li')
+    const text= e.target.value.toLowerCase();
+
+ items.forEach(item=>{
+    const itemList = item.firstChild.textContent.toLowerCase()
+    if (itemList.indexOf(text)!=-1){
+        item.style.display='flex'
+    }
+    else{
+        item.style.display="none"
+    }
+
+ })
+}
 
 itemForm.addEventListener('submit', addItem);
 itemList.addEventListener('click', removeItem)
 clear.addEventListener('click', clearItems)
+filter.addEventListener('input', filterItems)
 
 
 checkUI();
