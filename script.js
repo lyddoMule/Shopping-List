@@ -12,16 +12,42 @@ function addItem(e) {
         return; 
     }
 
+    addItemToDOM(newItem);
+
+    addItemsToLocalStorage(newItem)
+
+    checkUI();
+    itemInput.value='';
+
+}
+
+function addItemToDOM(item) {
     const li = document.createElement('li');
     li.className='flex remove-item   border w-96 py-2  font-bold justify-between'
-    li.appendChild(document.createTextNode(newItem));
+    li.appendChild(document.createTextNode(item));
     console.log(li.className);
     const btn= createBtn('text-red-500 font-bold px-2')
     li.appendChild(btn);
     itemList.appendChild(li)
+}
 
-    checkUI();
-    itemInput.value='';
+function addItemsToLocalStorage(item){
+    const itemsFromLocalStorage= getItemsFromStorage();
+
+    itemsFromLocalStorage.push(item)
+
+    localStorage.setItem('items', JSON.stringify(itemsFromLocalStorage))
+
+}
+
+function getItemsFromStorage() {
+    let itemsFromLocalStorage;
+    if(localStorage.getItem('items')===null){
+          itemsFromLocalStorage=[]
+    } else{
+        itemsFromLocalStorage= JSON.parse(localStorage.getItem('items'))
+    }
+    return itemsFromLocalStorage;
 
 }
 function createBtn(classes) {
@@ -30,6 +56,8 @@ function createBtn(classes) {
     btn.innerHTML="X"
     return btn;
 }
+
+ 
 
 function removeItem(e) {
     if(e.target.parentElement.classList.contains('remove-item')){
@@ -75,10 +103,23 @@ function filterItems(e) {
  })
 }
 
+function displayAddItems() {
+    const itemsFromLocalStorage= getItemsFromStorage();
+    itemsFromLocalStorage.forEach(item=>{
+        addItemToDOM(item)
+    })
+    checkUI()
+}
+
 itemForm.addEventListener('submit', addItem);
 itemList.addEventListener('click', removeItem)
 clear.addEventListener('click', clearItems)
 filter.addEventListener('input', filterItems)
+document.addEventListener('DOMContentLoaded', displayAddItems)
 
 
 checkUI();
+
+
+
+
