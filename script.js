@@ -21,6 +21,13 @@ function addItem(e) {
         itemToEdit.classList.remove('edit-mode')
         itemToEdit.remove();
         isEditMode=false;
+    }else{
+        if(checkIfItemExixts(newItem)){
+            alert(`${newItem} already exists in the list`)
+            itemInput.value='';
+            return;
+
+        }
     }
 
     addItemToDOM(newItem);
@@ -88,6 +95,13 @@ function onClickItem(e) {
         
         // console.log(e.target);
     }
+}
+
+
+function checkIfItemExixts(item) {
+    const itemsFromLocalStorage= getItemsFromStorage();
+    return itemsFromLocalStorage.includes(item);
+    
 }
 function setItemToEdit(item) {
     isEditMode=true;
